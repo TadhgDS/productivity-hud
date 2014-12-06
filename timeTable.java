@@ -20,7 +20,7 @@ import java.io.*;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Calendar;
-import java.text.DateFormat;	
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.lang.StringBuffer;
 import java.text.ParseException;
@@ -31,18 +31,20 @@ import java.util.TimeZone;
 
 
 
+
 class timeTable{
 
     public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_BLACK = "\u001B[30m";
     public static final String ANSI_RED = "\u001B[31m";
+    /*
+    public static final String ANSI_BLACK = "\u001B[30m";
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_YELLOW = "\u001B[33m";
     public static final String ANSI_BLUE = "\u001B[34m";
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
-
+    */
 
 
 
@@ -75,7 +77,7 @@ class timeTable{
         System.out.println(tlistTimestamp);
 
 
-        String filepath = "/home/tadhg/ProductivityHud/timetables/" + today + ".txt";
+        String filepath = "/home/tadhg/ProductivityHud/productivity-hud/timetables/" + today + ".txt";
         System.out.println(filepath);
         System.out.println(today);
         taskList = readTimeTable(filepath);
@@ -103,12 +105,15 @@ class timeTable{
 
 	void saveTasks(List<taskObj> listOfTasks,String dateFileName){
 		if(listOfTasks != null){
+
+
+            ///// TRYING TO SORT THIS GOD DAMN LIST OF TASKS BY START TIME
+            System.out.println(listOfTasks.toString());
+            Collections.sort(listOfTasks, new CustomComparator());
+            System.out.println(listOfTasks.toString());
+
 			StringBuffer aStringBuffer = new StringBuffer();
-            //////////////////////////////////////////////////////////////////////////////////////////////////////////
-            ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-
             SimpleDateFormat printFormat = new SimpleDateFormat("HH:mm");
-
 			for(taskObj aTask : listOfTasks){
 				aStringBuffer.append(aTask.taskDescription + ",");
 				aStringBuffer.append(printFormat.format(aTask.startTime) + ",");
@@ -117,7 +122,7 @@ class timeTable{
 			}
 
 			try {
-                String filepath = "/home/tadhg/ProductivityHud/timetables/" + dateFileName + ".txt";
+                String filepath = "/home/tadhg/ProductivityHud/productivity-hud/timetables/" + dateFileName + ".txt";
 				File file = new File(filepath);
 	 
 				// if file doesnt exists, then create it
@@ -144,7 +149,7 @@ class timeTable{
 
 		try {
 			fr = new FileReader(filename);
-		} catch (IOException e){}
+		} catch (IOException e){e.printStackTrace();}
 
 		BufferedReader br = new BufferedReader(fr);
 
@@ -199,9 +204,9 @@ class timeTable{
 
 				SimpleDateFormat printFormat = new SimpleDateFormat("HH:mm");
 
-				System.out.println(ANSI_RED + "Description: " + ANSI_RESET + aTask.taskDescription);
-				System.out.println(ANSI_RED + "Start Time: " + ANSI_RESET + printFormat.format(aTask.startTime));
-				System.out.println(ANSI_RED + "End Time: " + ANSI_RESET + printFormat.format(aTask.endTime));
+				System.out.println(ANSI_RED + "Description: " + ANSI_RESET + " " + aTask.taskDescription);
+				System.out.println(ANSI_RED + "Start Time: " + ANSI_RESET  + " " + printFormat.format(aTask.startTime));
+				System.out.println(ANSI_RED + "End Time: " + ANSI_RESET  + " " + printFormat.format(aTask.endTime));
 				System.out.println("\n");
 
 			}
@@ -231,11 +236,7 @@ class timeTable{
 		if((taskDescr != null) && (timeString != null) && (taskDuration != null)){
 		    Calendar cal = Calendar.getInstance(); // creates calendar
 		    cal.setTime(new Date()); // sets calendar time/date
-/*
-		    cal.add(Calendar.HOUR_OF_DAY, 1); // adds one hour
-		    cal.getTime(); // returns new date object, one hour in the future
-*/
-			//gets to here successfully
+
 			taskObj newTask = new taskObj(taskDescr);
 			//newTask.taskDescription = taskDescr;
 
@@ -278,8 +279,7 @@ class timeTable{
 
         for(String day : daysSplit){
 
-            //System.out.println("/home/tadhg/ProductivityHud/timetables/" + day + ".txt");
-            File file = new File("/home/tadhg/ProductivityHud/timetables/" + day + ".txt");
+            File file = new File("/home/tadhg/ProductivityHud/productivity-hud/timetables/" + day + ".txt");
 
             String contents = null;
             try{
@@ -306,40 +306,14 @@ class timeTable{
                     e.printStackTrace();
                 }
             }
-            /*
-            try{
-            FileWriter fw = new FileWriter(file.getAbsoluteFile());
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(aStringBuffer.toString());
-            bw.close();
-            }
-            catch (IOException e){}
-            System.out.println("Done");
-            */
-
-    /*
-            try(PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(file.getAbsoluteFile())))) {
-                out.println(aStringBuffer.toString());
-            }catch (IOException e) {
-                //exception handling left as an exercise for the reader
-            }
-    */
         }
 	}
-
-
-
-
-
-
-
-
 
 
 public static void main(String[] args) {
 
 	timeTable tt = new timeTable();
-	/*
+
 	tt.addTask("first task", "04:04", 90);
 	tt.addTask("second task", "01:36", 90);
 	tt.addTask("third task", "13:12", 200);
@@ -348,19 +322,27 @@ public static void main(String[] args) {
 	tt.addTask("6th task", "19:31", 5);
 
 //	tt.printTasks(tt.taskList);
-	tt.saveTasks(tt.taskList);
+	tt.saveTasks(tt.taskList,"THISISATEST");
 
-	//tt.printTasks(tt.readTimeTable("/home/tadhg/ProductivityHud/timetables/test.txt"));
-    tt.readTimeTable("/home/tadhg/ProductivityHud/timetables/test.txt");
-*/
-    tt.addRecurringTask("test task","02:19", 44, "Mon,Wed,Sun");
+	//tt.printTasks(tt.readTimeTable("/home/tadhg/ProductivityHud/productivity-hud/timetables/test.txt"));
+    //tt.readTimeTable("/home/tadhg/ProductivityHud/timetables/test.txt");
+
+    tt.addRecurringTask("test task", "02:19", 44, "Mon,Wed,Sun");
     tt.addRecurringTask("notherk","14:28", 555, "Mon,Wed,Sun");
     tt.addRecurringTask("anoooooooooother ask","05:49", 200, "Mon,Wed,Sun");
     tt.addRecurringTask("tes232222222","21:12", 20, "Mon,Wed,Sun");
 
     tt.addRecurringTask("tes232222222","21:12", 20, "Thu");
 
-//    tt.printTasks(tt.readTimeTable("/home/tadhg/ProductivityHud/timetables/mon.txt"));
+    tt.printTasks(tt.readTimeTable("/home/tadhg/ProductivityHud/productivity-hud/timetables/Mon.txt"));
+ 
+
+    Runtime rt = Runtime.getRuntime();
+    try{
+        Process pr = rt.exec("vlc -vvv --qt-start-minimized http://av.rasset.ie/av/live/radio/rnag.m3u");
+    } catch (IOException e){e.printStackTrace();}
+
+    //Process pr = rt.exec("pkill vlc");
 
 }
 
