@@ -1,0 +1,15 @@
+gnuplot -e "set title '{TITLE}';
+set key top left;
+set key width 2;
+set xlabel 'Date';
+set xdata time;
+set timefmt '%Y-%m-%d';
+set yrange [ 0 : ];
+set ylabel 'Weight (kg)';
+set grid;
+set term png;
+set term png size 900, 250;
+set xtics format '%d %b %y';
+set xtics '{START-DATE}', 12096000, '{END-DATE}';
+set output '{OUTPUT-FILE-NAME}.png';
+plot 'bp.dat' using 1:2 smooth bezier lw 3"

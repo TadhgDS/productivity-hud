@@ -141,14 +141,14 @@ class timeTable{
 		}
 	}
 
-	List<taskObj> readTimeTable(String filename){
+	List<taskObj> readTimeTable(String filepath){
 		
 		List<taskObj> tt = new ArrayList<taskObj>();
 
 		FileReader fr = null;
 
 		try {
-			fr = new FileReader(filename);
+			fr = new FileReader(filepath);
 		} catch (IOException e){e.printStackTrace();}
 
 		BufferedReader br = new BufferedReader(fr);
@@ -327,22 +327,18 @@ public static void main(String[] args) {
 	//tt.printTasks(tt.readTimeTable("/home/tadhg/ProductivityHud/productivity-hud/timetables/test.txt"));
     //tt.readTimeTable("/home/tadhg/ProductivityHud/timetables/test.txt");
 
+    /*
     tt.addRecurringTask("test task", "02:19", 44, "Mon,Wed,Sun");
     tt.addRecurringTask("notherk","14:28", 555, "Mon,Wed,Sun");
     tt.addRecurringTask("anoooooooooother ask","05:49", 200, "Mon,Wed,Sun");
     tt.addRecurringTask("tes232222222","21:12", 20, "Mon,Wed,Sun");
-
-    tt.addRecurringTask("tes232222222","21:12", 20, "Thu");
+    */
+    tt.addRecurringTask("this is a test","22:12", 20, "Thu");
 
     tt.printTasks(tt.readTimeTable("/home/tadhg/ProductivityHud/productivity-hud/timetables/Mon.txt"));
  
 
-    Runtime rt = Runtime.getRuntime();
-    try{
-        Process pr = rt.exec("vlc -vvv --qt-start-minimized http://av.rasset.ie/av/live/radio/rnag.m3u");
-    } catch (IOException e){e.printStackTrace();}
 
-    //Process pr = rt.exec("pkill vlc");
 
 }
 
