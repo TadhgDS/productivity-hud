@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+import org.apache.commons.cli.*;
 
 /**
  * Created by tadhg on 06/12/14.
@@ -168,6 +169,7 @@ public class LiftingLog {
     public static void main(String args[]){
         System.out.println("Wat");
 
+
         LiftingLog ll = new LiftingLog();
         /*
         ll.setCompleted("bp",50.5,8);
@@ -181,6 +183,7 @@ public class LiftingLog {
 */
 
         ll.getPlotData("bp");
+
 
     }
 }
