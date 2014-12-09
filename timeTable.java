@@ -36,7 +36,6 @@ class timeTable{
 
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_RED = "\u001B[31m";
-    /*
     public static final String ANSI_BLACK = "\u001B[30m";
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_YELLOW = "\u001B[33m";
@@ -44,7 +43,7 @@ class timeTable{
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
-    */
+
 
 
 
@@ -64,30 +63,21 @@ class timeTable{
         Date date = new Date();
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
         date = calendar.getTime();
-        System.out.println(date.toString());
-
         DateFormat dateFormat = new SimpleDateFormat("EEE");
         String today = dateFormat.format(date);
 
-
-
         dateFormat = new SimpleDateFormat("yyyy-MM-dd-EEE");
         String tlistTimestamp = dateFormat.format(date);
-
         System.out.println(tlistTimestamp);
 
 
         String filepath = "/home/tadhg/ProductivityHud/productivity-hud/timetables/" + today + ".txt";
-        System.out.println(filepath);
-        System.out.println(today);
         taskList = readTimeTable(filepath);
-        try{
-            System.out.println(readFile(filepath, Charset.defaultCharset()));
 
-        }catch(IOException e){e.printStackTrace();}
-        System.out.println("Today");
+        System.out.println("--------");
+
+        saveTasks(taskList,tlistTimestamp); //saves&sorts
         printTasks(taskList);
-        saveTasks(taskList,tlistTimestamp);
     }
 
 
@@ -97,6 +87,7 @@ class timeTable{
 
 		Date startTime;
 		Date endTime;
+        boolean isComplete = false;
 
 		taskObj(String description){
 			this.taskDescription = description;
@@ -105,17 +96,15 @@ class timeTable{
 
 	void saveTasks(List<taskObj> listOfTasks,String dateFileName){
 		if(listOfTasks != null){
-
-            System.out.println(listOfTasks.toString());
             Collections.sort(listOfTasks, new CustomComparator());
-            System.out.println(listOfTasks.toString());
 
 			StringBuffer aStringBuffer = new StringBuffer();
             SimpleDateFormat printFormat = new SimpleDateFormat("HH:mm");
 			for(taskObj aTask : listOfTasks){
 				aStringBuffer.append(aTask.taskDescription + ",");
 				aStringBuffer.append(printFormat.format(aTask.startTime) + ",");
-				aStringBuffer.append(printFormat.format(aTask.endTime) + ",");
+                aStringBuffer.append(printFormat.format(aTask.endTime) + ",");
+                aStringBuffer.append(aTask.isComplete + ",");
 				aStringBuffer.append("\n");
 			}
 
@@ -160,21 +149,11 @@ class timeTable{
 				
 	        	taskObj aTask = new taskObj(parts[0]);
 	        	//aTask.taskDescription = parts[0];
-		        try{
-                    try{
-                        //this may not be necessary anymore
-
-                        Date st = new SimpleDateFormat("EEE MMM dd HH:mm zzz yyyy").parse(parts[1]);
-                        aTask.startTime = st;
-                        Date et = new SimpleDateFormat("EEE MMM dd HH:mm zzz yyyy").parse(parts[2]);
-                        aTask.endTime = et;
-                    }catch (ParseException e) {
-                        Date st = new SimpleDateFormat("HH:mm").parse(parts[1]);
-                        aTask.startTime = st;
-                        Date et = new SimpleDateFormat("HH:mm").parse(parts[2]);
-                        aTask.endTime = et;
-                    }
-
+                try{
+                    Date st = new SimpleDateFormat("HH:mm").parse(parts[1]);
+                    aTask.startTime = st;
+                    Date et = new SimpleDateFormat("HH:mm").parse(parts[2]);
+                    aTask.endTime = et;
 		        } catch (ParseException e) {
 		            e.printStackTrace();
 				}
@@ -198,26 +177,13 @@ class timeTable{
 
 	void printTasks(List<taskObj> listOfTasks){
 		if(listOfTasks != null){
-			for(taskObj aTask : listOfTasks){
+            Collections.sort(listOfTasks, new CustomComparator());      // recently added
+
+            for(taskObj aTask : listOfTasks){
 
 				SimpleDateFormat printFormat = new SimpleDateFormat("HH:mm");
-                /*
-				System.out.println(ANSI_RED + "Description: " + ANSI_RESET + " " + aTask.taskDescription);
-				System.out.println(ANSI_RED + "Start Time: " + ANSI_RESET  + " " + printFormat.format(aTask.startTime));
-				System.out.println(ANSI_RED + "End Time: " + ANSI_RESET  + " " + printFormat.format(aTask.endTime));
-				System.out.println("\n");
-                */
-               /* String foo = String.format("%s, %s %s", aTask.taskDescription + ", " +
-                        printFormat.format(aTask.startTime), printFormat.format(aTask.endTime));
 
-
-                String foo = String.format("%s, %-40s %-40s", aTask.taskDescription +
-                        printFormat.format(aTask.startTime), printFormat.format(aTask.endTime));
-                        */
-                String foo = aTask.taskDescription + "\t\t\t\t\t" + printFormat.format(aTask.startTime) +"\t" + printFormat.format(aTask.endTime);
-               // System.out.println(foo);
-
-                System.out.format("%-20s %s %20s \n", aTask.taskDescription,
+                System.out.format("%-20s " + ANSI_YELLOW + "%s " + ANSI_RED + "%20s \n" + ANSI_RESET, aTask.taskDescription,
                         printFormat.format(aTask.startTime), printFormat.format(aTask.endTime));
 
 			}
@@ -320,11 +286,36 @@ class timeTable{
         }
 	}
 
-/*
+
 public static void main(String[] args) {
 
 	timeTable tt = new timeTable();
 
+/*
+    tt.addRecurringTask("Draw","05:00", 30, "Mon,Tue,Wed,Thu,Fri");
+    tt.addRecurringTask("Poems/words","05:30", 30, "Mon,Tue,Wed,Thu,Fri");
+    tt.addRecurringTask("Code Complete","06:00", 30, "Mon,Tue,Wed,Thu,Fri");
+    tt.addRecurringTask("Food","06:30", 30, "Mon,Tue,Wed,Thu,Fri");
+    tt.addRecurringTask("Project","07:00", 120, "Mon,Wed,Fri");
+    tt.addRecurringTask("Project","07:00", 180, "Tue,Thu");
+    tt.addRecurringTask("Gym","09:00", 120, "Mon,Wed,Fri");
+    tt.addRecurringTask("Jobs.","10:00", 60, "Tue,Thu");
+    tt.addRecurringTask("Food2","11:00", 60, "Mon,Tue,Wed,Thu,Fri");
+    tt.addRecurringTask("Jobs","12:30", 60, "Mon,Tue,Wed,Thu,Fri");
+    tt.addRecurringTask("Reading Time","13:00", 180, "Mon,Tue,Wed,Thu,Fri");
+    tt.addRecurringTask("1/2Marathon Training","16:00", 120, "Tue,Wed,Thu");
+    tt.addRecurringTask("1/2Marathon Training","16:00", 180, "Sun");
+
+    //meals
+    tt.addRecurringTask("Meal 1", "06:00", 15, "Mon,Tue,Wed,Thu,Fri");
+    tt.addRecurringTask("Meal 2","09:00", 15, "Mon,Tue,Wed,Thu,Fri");
+    tt.addRecurringTask("Meal 3","12:00", 15, "Mon,Tue,Wed,Thu,Fri");
+    tt.addRecurringTask("Meal 4","15:00", 15, "Mon,Tue,Wed,Thu,Fri");
+    tt.addRecurringTask("Meal 5", "18:00", 15, "Mon,Tue,Wed,Thu,Fri");
+    tt.addRecurringTask("Meal 6","21:00", 15, "Mon,Tue,Wed,Thu,Fri");
+*/
+
+/*
 	tt.addTask("first task", "04:04", 90);
 	tt.addTask("second task", "01:36", 90);
 	tt.addTask("third task", "13:12", 200);
@@ -338,7 +329,7 @@ public static void main(String[] args) {
 	//tt.printTasks(tt.readTimeTable("/home/tadhg/ProductivityHud/productivity-hud/timetables/test.txt"));
     //tt.readTimeTable("/home/tadhg/ProductivityHud/timetables/test.txt");
 
-    /*
+
     tt.addRecurringTask("test task", "02:19", 44, "Mon,Wed,Sun");
     tt.addRecurringTask("notherk","14:28", 555, "Mon,Wed,Sun");
     tt.addRecurringTask("anoooooooooother ask","05:49", 200, "Mon,Wed,Sun");
@@ -350,10 +341,10 @@ public static void main(String[] args) {
     tt.printTasks(tt.readTimeTable("/home/tadhg/ProductivityHud/productivity-hud/timetables/Mon.txt"));
  
 
-
+*/
 
 }
-*/
+
 }
 
 

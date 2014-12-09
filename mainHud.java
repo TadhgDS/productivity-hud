@@ -18,16 +18,35 @@ class mainHud{
         mainOptions.addOption("f", false, "fitness");
         mainOptions.addOption("p", false, "poetry");
 
+/*
+          timetableOptions.addOption(OptionBuilder.withDescription("use SIZE-byte blocks")
+                  .hasArg()
+                  .withArgName("SIZE")
+                  .create());
+*/
 
-        //  timetableOptions.addOption( OptionBuilder.withDescription( "use SIZE-byte blocks" )
-     //   .hasArg()
-      //  .withArgName("SIZE")
-      //  .create() );
+       /* timetableOptions.addOption(OptionBuilder.hasArg().withArgName("string value")
+                .withType(String.class)
+                .withDescription("Specify a string value")
+                .create(STRING)); */
+
+      /*  Options o = new Options();
+        o.addOption(OptionBuilder.hasArg().withArgName("integer value").withType(Number.class).withDescription("Specify an integer value").create(OPT_INT));
+        o.addOption(OptionBuilder.hasArg().withArgName("long value").withType(Number.class).withDescription("Specify a long value").create(OPT_LONG));
+        o.addOption(OptionBuilder.hasArg().withArgName("double value").withType(Number.class).withDescription("Specify a double value").create(OPT_DOUBLE));
+        o.addOption(OptionBuilder.hasArg().withArgName("float value").withType(Number.class).withDescription("Specify a float value").create(OPT_FLOAT));
+    */
         //timetableOptions.addOption()
+        HelpFormatter formatter = new HelpFormatter();
+       // formatter.printHelp( "ops", o );
+
+
 
         radioOptions.addOption("r", false, "play rnag");
         radioOptions.addOption("l", false, "play lyric");
         radioOptions.addOption("k", false, "kill radio");
+        
+
     }
 
 
@@ -107,6 +126,9 @@ class mainHud{
 
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp( "ops", mainOptions );
+
+        mainHud hud = new mainHud();
+        hud.setOptions();
 
 
 
