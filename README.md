@@ -16,3 +16,39 @@ articles in simple french, articles as gaeilge from faoinse.ie
 
 -Alarm clock-
 .. 
+
+
+
+---------------
+---------------
+
+
+Life hud
+
+- Finance
+	- AIB Recent Transactions/Balance
+	- Expenditure tracking
+	- Savings plans
+
+- Fitness
+	- Weightlifting records
+	- Garmin/Running records
+	- Graphs of results/improvements   // gnuplot
+
+- Productivity
+	- Alarm
+	- To-Do lists
+	- Timetables
+		{
+
+			-addTask(), addRecurringTask(), saveTasks(), readTimeTable(), printTasks()
+			- need to add:
+				-  Task completed
+
+		}
+
+- Interests
+	- Art
+	- Irish
+	- French
+	- Reddit content

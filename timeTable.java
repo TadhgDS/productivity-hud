@@ -106,8 +106,6 @@ class timeTable{
 	void saveTasks(List<taskObj> listOfTasks,String dateFileName){
 		if(listOfTasks != null){
 
-
-            ///// TRYING TO SORT THIS GOD DAMN LIST OF TASKS BY START TIME
             System.out.println(listOfTasks.toString());
             Collections.sort(listOfTasks, new CustomComparator());
             System.out.println(listOfTasks.toString());
@@ -203,11 +201,24 @@ class timeTable{
 			for(taskObj aTask : listOfTasks){
 
 				SimpleDateFormat printFormat = new SimpleDateFormat("HH:mm");
-
+                /*
 				System.out.println(ANSI_RED + "Description: " + ANSI_RESET + " " + aTask.taskDescription);
 				System.out.println(ANSI_RED + "Start Time: " + ANSI_RESET  + " " + printFormat.format(aTask.startTime));
 				System.out.println(ANSI_RED + "End Time: " + ANSI_RESET  + " " + printFormat.format(aTask.endTime));
 				System.out.println("\n");
+                */
+               /* String foo = String.format("%s, %s %s", aTask.taskDescription + ", " +
+                        printFormat.format(aTask.startTime), printFormat.format(aTask.endTime));
+
+
+                String foo = String.format("%s, %-40s %-40s", aTask.taskDescription +
+                        printFormat.format(aTask.startTime), printFormat.format(aTask.endTime));
+                        */
+                String foo = aTask.taskDescription + "\t\t\t\t\t" + printFormat.format(aTask.startTime) +"\t" + printFormat.format(aTask.endTime);
+               // System.out.println(foo);
+
+                System.out.format("%-20s %s %20s \n", aTask.taskDescription,
+                        printFormat.format(aTask.startTime), printFormat.format(aTask.endTime));
 
 			}
 		}
@@ -309,7 +320,7 @@ class timeTable{
         }
 	}
 
-
+/*
 public static void main(String[] args) {
 
 	timeTable tt = new timeTable();
@@ -332,7 +343,8 @@ public static void main(String[] args) {
     tt.addRecurringTask("notherk","14:28", 555, "Mon,Wed,Sun");
     tt.addRecurringTask("anoooooooooother ask","05:49", 200, "Mon,Wed,Sun");
     tt.addRecurringTask("tes232222222","21:12", 20, "Mon,Wed,Sun");
-    */
+    end//
+
     tt.addRecurringTask("this is a test","22:12", 20, "Thu");
 
     tt.printTasks(tt.readTimeTable("/home/tadhg/ProductivityHud/productivity-hud/timetables/Mon.txt"));
@@ -341,7 +353,7 @@ public static void main(String[] args) {
 
 
 }
-
+*/
 }
 
 

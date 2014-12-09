@@ -128,9 +128,6 @@ public class LiftingLog {
 
 
     void plotExercise(String exercise){
-
-
-
         /*
             Formatting
          */
@@ -139,30 +136,30 @@ public class LiftingLog {
         try{
             String datfile = readFile(datPath, Charset.defaultCharset());
             String startDate = datfile.substring(0,datfile.indexOf(","));
+
+            String templatePath = "/home/tadhg/ProductivityHud/productivity-hud/gym/plotTemplate.txt";
+            String gnuplotCommands = null;
+            try{
+                gnuplotCommands = readFile(templatePath, Charset.defaultCharset());
+            }catch (IOException e){e.printStackTrace();}
+
+            gnuplotCommands = gnuplotCommands.replace("{TITLE}",exercise);
+
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = new Date();
+
+            gnuplotCommands = gnuplotCommands.replace("{START-DATE}",startDate);
+
+            gnuplotCommands = gnuplotCommands.replace("{END-DATE}",dateFormat.format(date));
+            gnuplotCommands = gnuplotCommands.replace("{OUTPUT-FILE-NAME}",exercise);
+
+
+            Runtime rt = Runtime.getRuntime();
+            try{
+                Process pr = rt.exec(gnuplotCommands);
+            } catch (IOException e){e.printStackTrace();}
+
         }catch (IOException e){e.printStackTrace();}
-
-        String templatePath = "/home/tadhg/ProductivityHud/productivity-hud/gym/plotTemplate.txt";
-        String gnuplotCommands = null;
-        try{
-            gnuplotCommands = readFile(templatePath, Charset.defaultCharset());
-        }catch (IOException e){e.printStackTrace();}
-
-        gnuplotCommands = gnuplotCommands.replace("{TITLE}",exercise);
-
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = new Date();
-
-        gnuplotCommands = gnuplotCommands.replace("{START-DATE}",startDate);
-
-        gnuplotCommands = gnuplotCommands.replace("{END-DATE}",dateFormat.format(date));
-        gnuplotCommands = gnuplotCommands.replace("{OUTPUT-FILE-NAME}",exercise);
-
-
-        Runtime rt = Runtime.getRuntime();
-        try{
-            Process pr = rt.exec(gnuplotCommands);
-        } catch (IOException e){e.printStackTrace();}
-
     }
 
 
